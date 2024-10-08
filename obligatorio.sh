@@ -72,7 +72,17 @@ archivoVacio(){
 
 archivoVacio "$ARCHIVO_ADMINS" 
 
+esNumero(){
 
+read-p "Ingrese un número: " numero
+if [ $numero =~ ^-?[0-9]+$ ]; then
+    echo "Es un numero"
+else
+    echo "No es"
+fi
 
+}
+
+esNumero
 
 

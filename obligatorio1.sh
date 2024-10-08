@@ -1,20 +1,5 @@
 #!/bin/bash
 
-esNumero(){
-    	read -p "Ingrese num" num
-
-	if [[ $num =~ ^-?[0-9]+$ ]]; then
-    		echo "La variable es un número entero"
-	else
-    		echo "La variable no es un número entero"
-	fi
-}
-
-esNumero 
-
-
-
-
 registrarAnimal(){
 
 	echo " "
@@ -145,7 +130,7 @@ registrarAnimal(){
 		fi
 	done
 	
-	echo -q "$idDato - $tipoDato - $nombreDato - $sexoDato - $descDato - $fechaDato" >>  "$ARCHIVO_MASCOTAS"
+	echo "$idDato - $tipoDato - $nombreDato - $sexoDato - $descDato - $fechaDato" >>  "$ARCHIVO_MASCOTAS"
 
 }
 
