@@ -1,5 +1,28 @@
 #!/bin/bash
 
+adoptarMascota(){
+	local archivo=$1
+	
+	#Mostramos las mascotas disponibles
+	while read -r linea; do
+		echo $linea
+	done < "$ARCHIVO_MASCOTAS"
+
+	read -p "Ingrese el número de la mascota que desea adoptar: " idMascota
+	
+	# <<< guarda la salida del grep en la variable mascota
+	read -r mascota <<< "$(grep "^$idMascota -" "$ARCHIVO_MASCOTAS")"
+	
+	#Elimino la mascota de  ARCHIVO_MASCOTAS
+	# -v invierte el patron del grep. Usamos un archivo temporal para seguir con el mismo mascotas.txt
+	grep -v "^$idMascota -" mascotas.txt > temp.txt && mv temp.txt mascotas.txt
+	
+	#Falta enviar la fecha en la que se realizó la adopción
+	echo "$mascota" >> "adopciones.txt"
+	 
+
+}
+
 registrarAnimal(){
 
 	echo " "
@@ -358,6 +381,8 @@ menuCliente(){
 		menuInicio
 	elif [ "$opcion" = "2" ]; then
 		listarAnimales "$usuario"
+	elif [ "$opcion" = "3" ]; then
+		adoptarMascota
 	fi
 
 }

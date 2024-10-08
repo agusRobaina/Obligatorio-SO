@@ -4,3 +4,4 @@ cantidad - 4
 3. Max - Perro - 1 - Es muy alegre
 4. Tito - Gato - 2 - No come carne
 -q 2 - Perro - Rex - Hembra - Divertido - 06/10/2024
+11 Copito Gato 
