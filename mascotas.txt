@@ -1,7 +1,0 @@
-cantidad - 4
-1. Rex - Perro - 5 - Jugueton, carinoso y muy energico
-2. Juan - Perro - 3 - Le gusta jugar
-3. Max - Perro - 1 - Es muy alegre
-4. Tito - Gato - 2 - No come carne
--q 2 - Perro - Rex - Hembra - Divertido - 06/10/2024
-11 Copito Gato 

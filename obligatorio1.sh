@@ -46,23 +46,18 @@ registrarAnimal(){
 	local edadDato
 	local descDato
 	local fechaDato
+	
 
+   
 	#Ingreso ID mascota
-	while [ "$pedirNro" = true ]; do
+	cantidad=$(head -n 1 "cantMascotas.txt")
+	idDato=$(( cantidad + 1))
 
-		read -p "Ingrese id del animal" id
+	echo "$idDato"
 
-
-		if [ -z "$id" ]; then
-			echo  "Id Vacio"
-		elif [[ $id =~ ^-?[0-9]+$ ]]; then
-			echo "Correcto!! Es ID es un numero"
-			idDato="$id"
-			pedirNro=false
-		else
-			echo "El ID debe ser un número"
-		fi
-	done
+	#Limpiamos el archivo y actualizamos el valor
+	> "cantMascotas.txt"
+	echo $idDato >> "cantMascotas.txt"
 
 	#Ingreso Nombre mascota
 	while [ "$pedirNom" = true ]; do
@@ -113,7 +108,7 @@ registrarAnimal(){
 		
 		if [ -z "$edad" ]; then
 			echo "La edad no puede ser vacía"
-		elif [ $edad -gt 0 ] && [ $edad -le 20 ] && [[ $edad =~ ^[0-9]+$ ]]; then
+		elif [ $edad -gt 1 ] && [ $edad -le 30 ] && [[ $edad =~ ^[0-9]+$ ]]; then
 			echo "Edad Válida"
 			edadDato="$edad"
 			pedirEdad=false
@@ -153,8 +148,9 @@ registrarAnimal(){
 		fi
 	done
 	
-	echo "$idDato - $tipoDato - $nombreDato - $sexoDato - $descDato - $fechaDato" >>  "$ARCHIVO_MASCOTAS"
+	echo "$idDato - $nombreDato - $tipoDato - $sexoDato - $descDato - $fechaDato" >>  "$ARCHIVO_MASCOTAS"
 
+	menuAdmin
 }
 
 
@@ -192,8 +188,13 @@ registrarCliente(){
 		echo "Ingrese Nombre del usuario:"
 		read nombreIngresado
 
+		grep -q "^$nombreIngresado -" "$ARCHIVO_ADMINS"
+		res=$?
+	
 		if [ -z "$nombreIngresado" ]; then
 			echo "Ingrese nombre valido!"
+		elif [ "$res" -eq 0 ]; then
+			echo "Usuario es ADMIN "
 		else
 			nombre="$nombreIngresado"
 			pedirNombre=false
@@ -237,7 +238,9 @@ registrarCliente(){
 		fi
 	done
 
-	echo -q "$cedula - $nombre - $contra - $telefono - $nacimiento" >> "$ARCHIVO_CLIENTES"
+	echo "$cedula - $contra - $nombre - $telefono - $nacimiento" >> "$ARCHIVO_CLIENTES"
+
+	menuAdmin
 
 }
 
@@ -461,10 +464,10 @@ ingresoCliente(){
 	local contrasena
 
 	while [ "$pedirUsuario" = true ]; do
-		echo "Ingrese Usuario"
+		echo "Ingrese Cedula"
 		read usuarioIngresado
-		if [ "$usuarioIngresado" = "" ] || [ "$usuarioIngresado" = " " ]; then
-			echo "Ingrese un nombre de usuario valido!"
+		if [ -z "$usuarioIngresado" ]; then
+			echo "Ingrese una CI valida!"
 		else
 			usuario="$usuarioIngresado"
 			pedirUsuario=false
@@ -473,7 +476,7 @@ ingresoCliente(){
 	while [ "$pedirContra" = true ]; do
 		echo "Ingrese Contrasena"
 		read contraIngresada
-		if [ "$contraIngresada" = "" ] || [ "$contrasenaIngresada" = " " ]; then
+		if [ -z "$contraIngresada" ]; then
 			echo "Ingrese una contrasena valida!"
 		else
 			contrasena="$contraIngresada"
@@ -482,9 +485,10 @@ ingresoCliente(){
 	done
 
 
-	grep -q "$usuario - $contrasena" clientes.txt
+	grep -q "^$usuario - $contrasena" "$ARCHIVO_CLIENTES"
 	res=$?
-
+	
+	echo "$usuario - $contrasena"
 	if [ "$res" -eq 1 ]; then
 		echo "Usuario o contrasena incorrectas!"
 		menuInicio
