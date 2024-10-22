@@ -41,6 +41,7 @@ adoptarMascota(){
                 		mv temp.txt "$ARCHIVO_MASCOTAS"
                 		echo "La mascota ha sido adoptada y eliminada de la lista."
 				disminuirCantMascotas
+				menuCliente
                 		adopto=true
             		fi
 		fi
@@ -200,7 +201,9 @@ registrarCliente(){
 		grep -q "$cedulaIngresada" "$ARCHIVO_CLIENTES"
 		res=$?
 		if [ -z "$cedulaIngresada" ]; then
-			echo "Ingrese cedula valida"
+			echo "Ingrese cedula valida, no puede estar vacía"
+		elif ! [[ "$cedulaIngresada" =~ ^[0-9]{8}$ ]]; then
+			echo "Error, formato incorrecto"
 		elif [ "$res" -eq 0 ]; then
 			echo "Usuario ya registrado!"
 		else
@@ -218,6 +221,8 @@ registrarCliente(){
 	
 		if [ -z "$nombreIngresado" ]; then
 			echo "Ingrese nombre valido!"
+		elif ! [[ "$nombreIngresado" =~ ^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$ ]]; then
+			echo "Error, solo puede contener letras"
 		elif [ "$res" -eq 0 ]; then
 			echo "Usuario es ADMIN "
 		else
@@ -233,6 +238,8 @@ registrarCliente(){
 
 		if [ -z "$telIngresado" ]; then
 			echo "Ingrese telefono valido!"
+		elif ! [[ "$telIngresado" =~ ^[0-9]{9}$ ]]; then
+			echo "Error, formato incorrecto"
 		else
 			telefono="$telIngresado"
 			pedirTelefono=false
@@ -245,6 +252,8 @@ registrarCliente(){
 
 		if [ -z "$fechaIngresada" ]; then
 			echo "Ingrese fecha valida!"
+		elif ! [[ "$fechaIngresada" =~ ^([0-2][0-9]|(3[0-1]))/(0[1-9]|1[0-2])/[0-9]{4}$ ]]; then
+			echo "Formato de la fecha incorrecto, debe ser dd/mm/YYYY"
 		else
 			nacimiento="$fechaIngresada"
 			pedirNac=false
@@ -263,7 +272,7 @@ registrarCliente(){
 		fi
 	done
 
-	echo "$cedula - $contra - $nombre - $telefono - $nacimiento" >> "$ARCHIVO_CLIENTES"
+	echo "$cedula - $nombre - $contra - $telefono - $nacimiento" >> "$ARCHIVO_CLIENTES"
 
 	menuAdmin
 
@@ -483,19 +492,20 @@ ingresoAdmin(){
 
 ingresoCliente(){
 	echo "INGRESAR COMO CLIENTE"
-	local pedirUsuario=true
+	local pedirCI=true
 	local pedirContra=true
-	local usuario
+	local CI
 	local contrasena
+	local contrasenaCorrecta
 
-	while [ "$pedirUsuario" = true ]; do
+	while [ "$pedirCI" = true ]; do
 		echo "Ingrese Cedula"
-		read usuarioIngresado
-		if [ -z "$usuarioIngresado" ]; then
+		read CIingresada
+		if [ -z "$CIingresada" ]; then
 			echo "Ingrese una CI valida!"
 		else
-			usuario="$usuarioIngresado"
-			pedirUsuario=false
+			CI="$CIingresada"
+			pedirCI=false
 		fi
 	done
 	while [ "$pedirContra" = true ]; do
@@ -510,15 +520,22 @@ ingresoCliente(){
 	done
 
 
-	grep -q "^$usuario - $contrasena" "$ARCHIVO_CLIENTES"
-	res=$?
+	grep -q "^$CI -" "$ARCHIVO_CLIENTES"
+	resCI=$?
 	
-	echo "$usuario - $contrasena"
-	if [ "$res" -eq 1 ]; then
-		echo "Usuario o contrasena incorrectas!"
+	contrasenaCorrecta=$(grep "^$CI - " clientes.txt | cut -d '-' -f 3 | xargs)
+
+	echo "La CI es: $resCI"
+	echo "La contraseña encontrada es: $contrasenaCorrecta"
+	if [ "$resCI" -eq 1 ]; then
+		echo "Usuario incorrecto"
+		menuInicio
+	elif [ "$contrasena" != "$contrasenaCorrecta" ]; then
+		echo "Contraseña incorrecta"
 		menuInicio
 	else
-		menuCliente "$usuario"
+		usuarioCorrecto=$(grep "^$CI -" "$ARCHIVO_CLIENTES" | cut -d '-' -f 2 | xargs)
+		menuCliente "$usuarioCorrecto"
 	fi
 
 }

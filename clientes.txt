@@ -1,6 +1,5 @@
-1234 - contra - frantopo
-agus - contra
-1234 - juan - contraJuan - 12341234 - 010101
-565656 - pedro - contraPedro - 34563465 - 020202
--q 231232312 - dsad - a - 312323213 - 24/7/2002
-12345 - jo - b - 53453 - 11/12/2002
+1234 - agus - contraAgus - 098219568 - 24/07/2002
+5678 - fran - contraFran - 111111111 - 1/1/2003
+
+56124981 - Agustin - contraAgustin - 092602644 - 24/07/2002
+12345678 - Agustín - contra - 123456789 - 12/12/2321
