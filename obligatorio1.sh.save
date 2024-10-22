@@ -1,51 +1,25 @@
 #!/bin/bash
 
-
-disminuirCantMascotas(){
-	cantidadMascotas=$(head -n 1 "cantMascotas.txt")
-	echo "La cantidad de mascotas actual es: $cantidadMascotas"
-	((cantidadMascotas--))
-	echo "Esta es la cantidad de mascotas si adopto : $cantidadMascotas"
-	echo "$cantidadMascotas" >> tempCant.txt 
-	mv tempCant.txt cantMascotas.txt
-}
-
 adoptarMascota(){
-	#FLAG
-	adopto=false
-	
-	while [ "$adopto" = false ];do
-		#Mostramos las mascotas disponibles
-		while read -r linea; do
-			echo $linea
-		done < "$ARCHIVO_MASCOTAS"
+	#Mostramos las mascotas disponibles
+	while read -r linea; do
+		echo $linea
+	done < "$ARCHIVO_MASCOTAS"
 
-		read -p "Ingrese el número de la mascota que desea adoptar: " idMascota
+	read -p "Ingrese el número de la mascota que desea adoptar: " idMascota
 	
-		# <<< guarda la salida del grep en la variable mascota
-		read -r mascota <<< "$(grep "^$idMascota -" "$ARCHIVO_MASCOTAS")"
-		echo "La mascota que eligió es : $mascota"
+	# <<< guarda la salida del grep en la variable mascota
+	read -r mascota <<< "$(grep "^$idMascota -" "$ARCHIVO_MASCOTAS")"
+	echo "Esta es la salida del grep $mascota "
 
+	#Elimino la mascota de  ARCHIVO_MASCOTAS
+	# -v invierte el patron del grep. Usamos un archivo temporal para seguir con el mismo mascotas.txt
+	grep -v "^$idMascota -" "$ARCHIVO_MASCOTAS" > temp.txt && mv temp.txt "$ARCHIVO_MASCOTAS"
 	
-		if [ -z "$mascota" ];then
-			echo "El ID no existe"
-		else
-			echo "$mascota" >> "adopciones.txt"
-			#Elimino la mascota de  ARCHIVO_MASCOTAS
-			# -v invierte el patron del grep. Usamos un archivo temporal para seguir con el mismo mascotas.txt
-			grep -v "^$idMascota -" "$ARCHIVO_MASCOTAS" > temp.txt && mv temp.txt "$ARCHIVO_MASCOTAS"
-			if grep "^$idMascota -" temp.txt > /dev/null; then
-                		echo "Error: La mascota no se eliminó correctamente."
-            		else
-                		# Mover el archivo temporal a ARCHIVO_MASCOTAS si todo está bien
-                		mv temp.txt "$ARCHIVO_MASCOTAS"
-                		echo "La mascota ha sido adoptada y eliminada de la lista."
-				disminuirCantMascotas
-                		adopto=true
-            		fi
-		fi
-	done
-	
+	#Falta enviar la fecha en la que se realizó la adopción
+	echo "$mascota" >> "adopciones.txt"
+	 
+
 }
 
 registrarAnimal(){
