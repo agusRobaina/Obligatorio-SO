@@ -7,7 +7,6 @@
 
 // Definición de semáforos para cada materia
 sem_t SI_CS, SO_SD, SO_CS, RC_SD, RC_SO, RC_DW, RC_SI, BD_BigD, BD_DW, BD_SI, F2_RC, F2_RO, IP_ED, F1_F2, M1_M2, M2_PA, M2_AA, M2_IA, M2_BigD, ED_PA, ED_BD, F2_CG, PA_CG, PA_RC, PA_RO, PA_SO, PA_IS, PA_IA, PA_AA; 
-sem_t SI_CS, SO_SD, SO_CS, RC_SD, RC_SO, RC_DW, RC_SI, BD_BigD, BD_DW, BD_SI, F2_RC, F2_RO, IP_ED, F1_F2, M1_M2, M2_PA, M2_AA, M2_IA, M2_BigD, ED_PA, ED_BD, F2_CG, PA_CG, PA_RC, PA_RO, PA_SO, PA_IS, PA_IA, PA_AA ;
 // Funciones de los threads (una por materia)
 void *tIP_function(void *arg) {
     printf("Introducción a la Programación\n");
@@ -252,8 +251,4 @@ int main()
     pthread_join(TCS, NULL);
 
     return 0;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 71208c0448bbdc608f01e71327a43e0a120cc7e7
