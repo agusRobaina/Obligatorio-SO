@@ -2,14 +2,12 @@
 #include <semaphore.h>
 #include <stdio.h>
 
-//Ejercicio2 288469/ 269622
+//Ejercicio2 
+//Topolansky (288469)/ Robaina (269622)
 
 // Definición de semáforos para cada materia
-<<<<<<< HEAD
 sem_t SI_CS, SO_SD, SO_CS, RC_SD, RC_SO, RC_DW, RC_SI, BD_BigD, BD_DW, BD_SI, F2_RC, F2_RO, IP_ED, F1_F2, M1_M2, M2_PA, M2_AA, M2_IA, M2_BigD, ED_PA, ED_BD, F2_CG, PA_CG, PA_RC, PA_RO, PA_SO, PA_IS, PA_IA, PA_AA; 
-=======
 sem_t SI_CS, SO_SD, SO_CS, RC_SD, RC_SO, RC_DW, RC_SI, BD_BigD, BD_DW, BD_SI, F2_RC, F2_RO, IP_ED, F1_F2, M1_M2, M2_PA, M2_AA, M2_IA, M2_BigD, ED_PA, ED_BD, F2_CG, PA_CG, PA_RC, PA_RO, PA_SO, PA_IS, PA_IA, PA_AA ;
->>>>>>> 71208c0448bbdc608f01e71327a43e0a120cc7e7
 // Funciones de los threads (una por materia)
 void *tIP_function(void *arg) {
     printf("Introducción a la Programación\n");
@@ -200,10 +198,7 @@ int main()
     sem_init(&PA_IS, 0, 0);
     sem_init(&PA_IA, 0, 0);
     sem_init(&PA_AA, 0, 0);
-<<<<<<< HEAD
     sem_init(&SI_CS, 0, 0);
-=======
->>>>>>> 71208c0448bbdc608f01e71327a43e0a120cc7e7
 
     // Declaración de threads
     pthread_t TM1, TIP, TF1, TM2, TED, TPA, TBD, TF2, TAA, TIA, TIS, TRC, TCG, TSO, TSI, TBigD, TSD, TDW, TRO, TCS;
