@@ -1,6 +1,61 @@
 #!/bin/bash
 
+estadisticasAdopcion(){
+	echo "Estadisticas de adopción:"
+	echo "1. Porcentaje de adopción por tipo"
+	echo "2. Mes con más adopciones"
+	echo "3. Edad promedio de los animales adoptados"
+	echo "4. Salir"
 
+	read -p "Seleccione una opción: " opcion
+
+	case $opcion in
+		1)
+			#PORCENTAJE ADOPCIONES
+			totalAdopciones=$(wc -l < "adopciones.txt")
+			#Fijamos los tipos de mascotas
+			tipos=("Perro" "Gato" "Conejo" "Loro" "Otro")
+			echo "Porcentaje de adopción por tipo: "
+			for tipo in "${tipos[@]}"; do
+				adopciones_tipo=$(grep -c " - $tipo - " adopciones.txt)
+				if [ $totalAdopciones -gt 0 ]; then
+					porcentaje=$(( (adopciones_tipo * 100) / totalAdopciones))
+					echo "$tipo: $porcentaje"
+				else
+					echo "$tipo: No hay adopciones registradas."
+				fi
+			done
+			;;
+		2)
+			#MES CON MÁS ADOPCIONES
+			echo "Mes con más adopciones"
+			cut -d '-' -f 6 adopciones.txt | cut -d '/' -f 2 | sort | uniq -c | sort -nr | head -n 1
+			;;
+		3)
+			#EDAD PROMEDIO
+			totalEdad=0
+
+			while IFS=' - ' read -r id nombre edad genero personalidad fecha; do
+				totalEdad=$((totalEdad + edad))
+			done < adopciones.txt
+			echo "La suma total de las edades es: $totalEdad"
+			totalAdopciones=$(wc -l < adopciones.txt)
+			if [ "$totalAdopciones" -gt 0 ]; then
+				promedio=$(echo "scale=2; $totalEdad / $totalAdopciones" | bc)
+				echo "$promedio años"
+			else
+				echo "No hay adopciones registradas"
+			fi
+			;;
+		4)
+			echo "Saliendo..."
+			return
+			;;
+		*)
+			echo "Opción inválida, por favor seleccione una opción correcta"
+			;;
+	esac
+}
 disminuirCantMascotas(){
 	cantidadMascotas=$(head -n 1 "cantMascotas.txt")
 	echo "La cantidad de mascotas actual es: $cantidadMascotas"
@@ -435,6 +490,7 @@ menuAdmin(){
 	echo "1. Regresar"
 	echo "2. Registrar Cliente"
 	echo "3. Registrar Animal"
+	echo "4. Estadisticas"
 	read opcion
 
 	if [ "$opcion" = "1" ]; then
@@ -443,7 +499,9 @@ menuAdmin(){
 		registrarCliente
 	elif [ "$opcion" = "3" ]; then
 		registrarAnimal
-	fi 
+	elif [ "$opcion" = "4" ];then
+		estadisticasAdopcion
+	fi
 
 }
 

@@ -1,3 +1,3 @@
-1 - Pepe - Leon - Macho - Malo - 21/10/2024
-2 - Lolo - Leon - Macho - Malo - 21/10/2024
-1 - Jojo - Loro - Macho - Griton - 21/10/2024
+1 - Pepe - Perro - Macho - Malo - 21/10/2024
+2 - Lolo - Perro - Macho - Malo - 21/10/2024
+1 - Jojo - Gato - Macho - Griton - 21/10/2024
